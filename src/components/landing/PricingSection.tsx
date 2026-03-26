@@ -25,7 +25,7 @@ const plans = [
     name: "Enterprise",
     price: "Custom",
     description: "For large organizations",
-    features: ["Everything in Pro", "Unlimited members", "Priority support", "Custom integrations", "Advanced analytics", "Unlimited storage"],
+    features: ["Everything in Pro", "Unlimited members", "Priority support", "Custom integrations", "AI analytics", "Unlimited storage"],
     cta: "Contact Sales",
     highlighted: false,
   },
@@ -36,7 +36,7 @@ const PricingSection = () => {
     <section className="py-24">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
-          <p className="text-sm font-semibold text-accent uppercase tracking-widest mb-3">Pricing</p>
+          <p className="text-sm font-semibold text-primary uppercase tracking-widest mb-3">Pricing</p>
           <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground">Simple, transparent pricing</h2>
         </div>
 
@@ -48,10 +48,10 @@ const PricingSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className={`rounded-xl border p-8 flex flex-col ${
+              className={`rounded-2xl border p-8 flex flex-col ${
                 plan.highlighted
-                  ? "border-accent shadow-lg shadow-accent/10 relative"
-                  : "bg-card"
+                  ? "border-primary/30 byld-glow relative bg-card"
+                  : "border-border/50 bg-card"
               }`}
             >
               {plan.highlighted && (
@@ -75,7 +75,7 @@ const PricingSection = () => {
               </ul>
               <Button
                 asChild
-                className={plan.highlighted ? "byld-gradient text-primary-foreground border-0" : ""}
+                className={plan.highlighted ? "byld-gradient text-primary-foreground border-0 shadow-lg shadow-primary/20" : "border-border/50"}
                 variant={plan.highlighted ? "default" : "outline"}
               >
                 <Link to="/signup">{plan.cta}</Link>

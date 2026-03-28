@@ -1,19 +1,26 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Building2, Mail, Lock, ArrowRight } from "lucide-react";
+import { Building2, Mail, Lock, ArrowRight, Ruler, HardHat, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 
+const roles = [
+  { id: "architect", label: "Architect", icon: Ruler, desc: "Full project control & design management" },
+  { id: "contractor", label: "Contractor", icon: HardHat, desc: "Update site progress & complete tasks" },
+  { id: "client", label: "Client", icon: Eye, desc: "View progress, updates & documents" },
+];
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [selectedRole, setSelectedRole] = useState("architect");
   const { toast } = useToast();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    toast({ title: "Demo Mode", description: "Redirecting to dashboard." });
+    toast({ title: "Welcome back!", description: `Signed in as ${selectedRole}.` });
     window.location.href = "/dashboard";
   };
 
@@ -40,14 +47,35 @@ const Login = () => {
           </Link>
 
           <h1 className="font-display text-2xl font-bold text-foreground mb-2">Sign in</h1>
-          <p className="text-sm text-muted-foreground mb-8">Enter your credentials to access your account</p>
+          <p className="text-sm text-muted-foreground mb-6">Choose your role and sign in to continue</p>
+
+          {/* Role Selection */}
+          <div className="grid grid-cols-3 gap-2 mb-6">
+            {roles.map((role) => (
+              <button
+                key={role.id}
+                onClick={() => setSelectedRole(role.id)}
+                className={`flex flex-col items-center gap-1.5 p-3 rounded-xl border text-center transition-all duration-200 ${
+                  selectedRole === role.id
+                    ? "border-primary bg-primary/5 shadow-sm"
+                    : "border-border hover:border-primary/30 hover:bg-secondary/50"
+                }`}
+              >
+                <role.icon className={`h-5 w-5 ${selectedRole === role.id ? "text-primary" : "text-muted-foreground"}`} />
+                <span className={`text-xs font-medium ${selectedRole === role.id ? "text-primary" : "text-foreground"}`}>{role.label}</span>
+              </button>
+            ))}
+          </div>
+          <p className="text-xs text-muted-foreground mb-6 text-center">
+            {roles.find(r => r.id === selectedRole)?.desc}
+          </p>
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
               <Label htmlFor="email" className="text-xs text-muted-foreground">Email</Label>
               <div className="relative mt-1.5">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input id="email" type="email" placeholder="you@company.com" className="pl-10 bg-secondary/50 border-border/50" value={email} onChange={(e) => setEmail(e.target.value)} />
+                <Input id="email" type="email" placeholder="you@company.com" className="pl-10 bg-secondary/50 border-border" value={email} onChange={(e) => setEmail(e.target.value)} />
               </div>
             </div>
             <div>
@@ -57,10 +85,10 @@ const Login = () => {
               </div>
               <div className="relative mt-1.5">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input id="password" type="password" placeholder="••••••••" className="pl-10 bg-secondary/50 border-border/50" value={password} onChange={(e) => setPassword(e.target.value)} />
+                <Input id="password" type="password" placeholder="••••••••" className="pl-10 bg-secondary/50 border-border" value={password} onChange={(e) => setPassword(e.target.value)} />
               </div>
             </div>
-            <Button type="submit" className="w-full byld-gradient text-primary-foreground border-0 h-11 shadow-lg shadow-primary/20">
+            <Button type="submit" className="w-full byld-gradient text-primary-foreground border-0 h-11 shadow-md hover:shadow-lg transition-shadow">
               Sign In <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </form>

@@ -13,14 +13,15 @@ const LandingNav = () => {
           <span className="font-display font-bold text-xl text-foreground tracking-tight">BYLD</span>
         </Link>
         <div className="hidden md:flex items-center gap-8">
-          <a href="#features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Features</a>
-          <a href="#pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Pricing</a>
+          <Link to="/features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Features</Link>
+          <Link to="/pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Pricing</Link>
+          <Link to="/integrations" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Integrations</Link>
         </div>
         <div className="flex items-center gap-3">
           <Button asChild variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
             <Link to="/login">Log in</Link>
           </Button>
-          <Button asChild size="sm" className="byld-gradient text-primary-foreground border-0 shadow-lg shadow-primary/20">
+          <Button asChild size="sm" className="byld-gradient text-primary-foreground border-0 shadow-md">
             <Link to="/signup">Get Started</Link>
           </Button>
         </div>

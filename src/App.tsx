@@ -3,9 +3,11 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { RoleProvider } from "@/contexts/RoleContext";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import DashboardRouter from "./pages/DashboardRouter";
 import Dashboard from "./pages/Dashboard";
 import ProjectWorkspace from "./pages/ProjectWorkspace";
 import ProjectsPage from "./pages/ProjectsPage";
@@ -18,6 +20,10 @@ import ChatPage from "./pages/ChatPage";
 import AIAssistantPage from "./pages/AIAssistantPage";
 import NotificationsPage from "./pages/NotificationsPage";
 import SettingsPage from "./pages/SettingsPage";
+import ApprovalsPage from "./pages/ApprovalsPage";
+import ConsultationRequestsPage from "./pages/ConsultationRequestsPage";
+import ConsultantMarketplacePage from "./pages/ConsultantMarketplacePage";
+import SiteLogbookPage from "./pages/SiteLogbookPage";
 import DashboardLayout from "./layouts/DashboardLayout";
 import NotFound from "./pages/NotFound";
 import FeaturesPage from "./pages/FeaturesPage";
@@ -39,39 +45,45 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/features" element={<FeaturesPage />} />
-          <Route path="/pricing" element={<PricingPage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/blog" element={<BlogPage />} />
-          <Route path="/careers" element={<CareersPage />} />
-          <Route path="/privacy" element={<PrivacyPage />} />
-          <Route path="/terms" element={<TermsPage />} />
-          <Route path="/security" element={<SecurityPage />} />
-          <Route path="/integrations" element={<IntegrationsPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/changelog" element={<ChangelogPage />} />
-          <Route element={<DashboardLayout />}>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/projects" element={<ProjectsPage />} />
-            <Route path="/project/:id" element={<ProjectWorkspace />} />
-            <Route path="/tasks" element={<TasksPage />} />
-            <Route path="/updates" element={<SiteUpdatesPage />} />
-            <Route path="/documents" element={<DocumentsPage />} />
-            <Route path="/budget" element={<BudgetPage />} />
-            <Route path="/team" element={<TeamPage />} />
-            <Route path="/chat" element={<ChatPage />} />
-            <Route path="/ai" element={<AIAssistantPage />} />
-            <Route path="/notifications" element={<NotificationsPage />} />
-            <Route path="/settings" element={<SettingsPage />} />
-          </Route>
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+      <RoleProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/features" element={<FeaturesPage />} />
+            <Route path="/pricing" element={<PricingPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/careers" element={<CareersPage />} />
+            <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="/terms" element={<TermsPage />} />
+            <Route path="/security" element={<SecurityPage />} />
+            <Route path="/integrations" element={<IntegrationsPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/changelog" element={<ChangelogPage />} />
+            <Route element={<DashboardLayout />}>
+              <Route path="/dashboard" element={<DashboardRouter />} />
+              <Route path="/projects" element={<ProjectsPage />} />
+              <Route path="/project/:id" element={<ProjectWorkspace />} />
+              <Route path="/tasks" element={<TasksPage />} />
+              <Route path="/updates" element={<SiteUpdatesPage />} />
+              <Route path="/documents" element={<DocumentsPage />} />
+              <Route path="/budget" element={<BudgetPage />} />
+              <Route path="/team" element={<TeamPage />} />
+              <Route path="/chat" element={<ChatPage />} />
+              <Route path="/ai" element={<AIAssistantPage />} />
+              <Route path="/notifications" element={<NotificationsPage />} />
+              <Route path="/settings" element={<SettingsPage />} />
+              <Route path="/approvals" element={<ApprovalsPage />} />
+              <Route path="/consultation-requests" element={<ConsultationRequestsPage />} />
+              <Route path="/consultants" element={<ConsultantMarketplacePage />} />
+              <Route path="/logbook" element={<SiteLogbookPage />} />
+            </Route>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </RoleProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );

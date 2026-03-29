@@ -1,27 +1,32 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { Building2, Mail, Lock, ArrowRight, Ruler, HardHat, Eye } from "lucide-react";
+import { useNavigate, Link } from "react-router-dom";
+import { Building2, Mail, Lock, ArrowRight, Ruler, HardHat, Eye, Briefcase } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
+import { useRole, UserRole } from "@/contexts/RoleContext";
 
 const roles = [
-  { id: "architect", label: "Architect", icon: Ruler, desc: "Full project control & design management" },
-  { id: "contractor", label: "Contractor", icon: HardHat, desc: "Update site progress & complete tasks" },
-  { id: "client", label: "Client", icon: Eye, desc: "View progress, updates & documents" },
+  { id: "architect" as UserRole, label: "Architect", icon: Ruler, desc: "Full project control & design management" },
+  { id: "contractor" as UserRole, label: "Contractor", icon: HardHat, desc: "Update site progress & complete tasks" },
+  { id: "client" as UserRole, label: "Client", icon: Eye, desc: "View progress, updates & documents" },
+  { id: "consultant" as UserRole, label: "Consultant", icon: Briefcase, desc: "Review requests & share expertise" },
 ];
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [selectedRole, setSelectedRole] = useState("architect");
+  const [selectedRole, setSelectedRole] = useState<UserRole>("architect");
   const { toast } = useToast();
+  const { setRole } = useRole();
+  const navigate = useNavigate();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
+    setRole(selectedRole);
     toast({ title: "Welcome back!", description: `Signed in as ${selectedRole}.` });
-    window.location.href = "/dashboard";
+    navigate("/dashboard");
   };
 
   return (
@@ -49,8 +54,7 @@ const Login = () => {
           <h1 className="font-display text-2xl font-bold text-foreground mb-2">Sign in</h1>
           <p className="text-sm text-muted-foreground mb-6">Choose your role and sign in to continue</p>
 
-          {/* Role Selection */}
-          <div className="grid grid-cols-3 gap-2 mb-6">
+          <div className="grid grid-cols-2 gap-2 mb-4">
             {roles.map((role) => (
               <button
                 key={role.id}

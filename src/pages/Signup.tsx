@@ -1,23 +1,33 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { Building2, Mail, Lock, User, ArrowRight } from "lucide-react";
+import { useNavigate, Link } from "react-router-dom";
+import { Building2, Mail, Lock, User, ArrowRight, Ruler, HardHat, Eye, Briefcase } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { useRole, UserRole } from "@/contexts/RoleContext";
+
+const roles = [
+  { id: "architect" as UserRole, label: "Architect" },
+  { id: "contractor" as UserRole, label: "Contractor" },
+  { id: "client" as UserRole, label: "Client" },
+  { id: "consultant" as UserRole, label: "Consultant" },
+];
 
 const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("");
+  const [selectedRole, setSelectedRole] = useState<UserRole>("architect");
   const { toast } = useToast();
+  const { setRole } = useRole();
+  const navigate = useNavigate();
 
   const handleSignup = (e: React.FormEvent) => {
     e.preventDefault();
-    toast({ title: "Demo Mode", description: "Redirecting to dashboard." });
-    window.location.href = "/dashboard";
+    setRole(selectedRole);
+    toast({ title: "Account created!", description: "Redirecting to dashboard." });
+    navigate("/dashboard");
   };
 
   return (
@@ -43,42 +53,44 @@ const Signup = () => {
           </Link>
 
           <h1 className="font-display text-2xl font-bold text-foreground mb-2">Create account</h1>
-          <p className="text-sm text-muted-foreground mb-8">Get started with your free BYLD account</p>
+          <p className="text-sm text-muted-foreground mb-6">Get started with your free BYLD account</p>
 
           <form onSubmit={handleSignup} className="space-y-4">
             <div>
               <Label htmlFor="name" className="text-xs text-muted-foreground">Full Name</Label>
               <div className="relative mt-1.5">
                 <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input id="name" placeholder="John Doe" className="pl-10 bg-secondary/50 border-border/50" value={name} onChange={(e) => setName(e.target.value)} />
+                <Input id="name" placeholder="John Doe" className="pl-10 bg-secondary/50 border-border" value={name} onChange={(e) => setName(e.target.value)} />
               </div>
             </div>
             <div>
               <Label htmlFor="email" className="text-xs text-muted-foreground">Email</Label>
               <div className="relative mt-1.5">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input id="email" type="email" placeholder="you@company.com" className="pl-10 bg-secondary/50 border-border/50" value={email} onChange={(e) => setEmail(e.target.value)} />
+                <Input id="email" type="email" placeholder="you@company.com" className="pl-10 bg-secondary/50 border-border" value={email} onChange={(e) => setEmail(e.target.value)} />
               </div>
             </div>
             <div>
               <Label htmlFor="password" className="text-xs text-muted-foreground">Password</Label>
               <div className="relative mt-1.5">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input id="password" type="password" placeholder="••••••••" className="pl-10 bg-secondary/50 border-border/50" value={password} onChange={(e) => setPassword(e.target.value)} />
+                <Input id="password" type="password" placeholder="••••••••" className="pl-10 bg-secondary/50 border-border" value={password} onChange={(e) => setPassword(e.target.value)} />
               </div>
             </div>
             <div>
               <Label className="text-xs text-muted-foreground">Role</Label>
-              <Select value={role} onValueChange={setRole}>
-                <SelectTrigger className="mt-1.5 bg-secondary/50 border-border/50">
-                  <SelectValue placeholder="Select your role" />
-                </SelectTrigger>
-                <SelectContent className="bg-card border-border/50">
-                  <SelectItem value="architect">Architect</SelectItem>
-                  <SelectItem value="contractor">Contractor</SelectItem>
-                  <SelectItem value="client">Client</SelectItem>
-                </SelectContent>
-              </Select>
+              <div className="grid grid-cols-2 gap-2 mt-1.5">
+                {roles.map(r => (
+                  <button
+                    key={r.id}
+                    type="button"
+                    onClick={() => setSelectedRole(r.id)}
+                    className={`p-2 rounded-lg border text-xs font-medium transition-all ${selectedRole === r.id ? "border-primary bg-primary/5 text-primary" : "border-border text-muted-foreground hover:border-primary/30"}`}
+                  >
+                    {r.label}
+                  </button>
+                ))}
+              </div>
             </div>
             <Button type="submit" className="w-full byld-gradient text-primary-foreground border-0 h-11 shadow-lg shadow-primary/20">
               Create Account <ArrowRight className="ml-2 h-4 w-4" />
